@@ -1,4 +1,13 @@
+import { useState } from "React";
+import { Link } from "react-router-dom";
+
 const Login = () => {
+  const [rememberMe, setRememberMe] = useState(null);
+
+  function handleRememberMe(e) {
+    // debugger;
+  }
+
   return (
     <div className="container">
       <div className="row mt-5">
@@ -37,20 +46,22 @@ const Login = () => {
                 <div className="row clearfix mb-2">
                   <div className="col-6 float-start">
                     <div className="form-check">
-                      <label className="form-check-label" htmlFor="rememberMe">
+                      <label className="form-check-label pointer" htmlFor="rememberMe">
                         Remember me
                       </label>
                       <input
-                        className="form-check-input"
+                        className="form-check-input pointer"
                         type="checkbox"
-                        value=""
                         id="rememberMe"
-                        checked
+                        checked={rememberMe}
+                        onChange={(e) => {
+                          handleRememberMe(e);
+                        }}
                       />
                     </div>
                   </div>
                   <div className="col-6 text-end float-end">
-                    <a href="#">Forgot password?</a>
+                    <Link to="/forgot-password">Forgot password?</Link>
                   </div>
                 </div>
 
@@ -69,7 +80,7 @@ const Login = () => {
                   <div className="col-12">
                     <div className="text-center">
                       <p>
-                        Not a member? <a href="#">Register</a>
+                        Not a member? <Link to="signup">Register</Link>
                       </p>
                     </div>
                   </div>

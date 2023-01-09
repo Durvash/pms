@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Signup = () => {
+const ForgotPassword = () => {
   return (
     <div className="container">
       <div className="row mt-5">
@@ -11,11 +11,10 @@ const Signup = () => {
               <form>
                 <div className="row mb-3">
                   <div className="col-12 text-center">
-                    <h4 className="">Sign up</h4>
+                    <h4 className="">Forgot Password</h4>
                     <p>
                       <small>
-                        By signing up, I agree to the PMS Privacy Policy and
-                        Terms of Service.
+                        Please enter the email address you'd like your password reset information sent to
                       </small>
                     </p>
                   </div>
@@ -35,7 +34,7 @@ const Signup = () => {
                       type="button"
                       className="btn btn-primary btn-block col-12"
                     >
-                      Sign up
+                      Request Reset Link
                     </button>
                   </div>
                 </div>
@@ -44,7 +43,7 @@ const Signup = () => {
                   <div className="col-12">
                     <div className="text-center">
                       <p>
-                        Already Registered? <Link to="/">Login</Link>
+                        <Link to="/">Back to Login</Link>
                       </p>
                     </div>
                   </div>
@@ -58,4 +57,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default ForgotPassword;

@@ -1,13 +1,13 @@
 import "./assets/css/bootstrap/bootstrap.min.css";
-import { Suspense } from "React";
+import { Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RouteList } from "./Layout/RouteList";
-import Loading from "./components/Loading";
+import Loading from "./component/Loading";
 
 function App() {
   return (
     <div className="App">
-    {process.env.REACT_APP_API_BASE}
+    {/* {import.meta.env.VITE_REACT_APP_MODE} */}
       <BrowserRouter>
         <Suspense fallback={<Loading />}>
           <Routes>

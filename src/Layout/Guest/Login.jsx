@@ -1,21 +1,26 @@
-import axios from "axios";
 import { useState } from "React";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { api_url } from "../../config";
+import { apiRequest, errorMsg, successMsg } from "../../helpers/General";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [rememberMe, setRememberMe] = useState(null);
-
-  function handleRememberMe(e) {
-    // debugger;
-  }
+  const [rememberVal, setRememberVal] = useState(null);
 
   async function onSubmit(data) {
-    // console.log(data);
-    const reponse = await axios.post(api_url + '/login', data);
-    console.log('login : ', reponse);
+    let params = {
+      method: 'POST',
+      api: '/login',
+      email: data.email,
+      password: data.password
+    }
+    let response = await apiRequest(params);
+    if (response.data.success) {
+      successMsg(response.data.message);
+    } else {
+      errorMsg(response.data.message);
+    }
   }
 
   return (
@@ -38,8 +43,8 @@ const Login = () => {
                     </label>
                     <input
                       type="email"
-                      className="form-control"
                       {...register('email', { required: true })}
+                      className="form-control"
                     />
                   </div>
                 </div>
@@ -50,8 +55,8 @@ const Login = () => {
                       Password
                     </label>
                     <input
-                      {...register('password', { required: true })}
                       type="password"
+                      {...register('password', { required: true })}
                       className="form-control"
                     />
                   </div>
@@ -71,8 +76,9 @@ const Login = () => {
                         type="checkbox"
                         id="rememberMe"
                         checked={rememberMe}
+                        value={rememberVal}
                         onChange={(e) => {
-                          handleRememberMe(e);
+                          setRememberVal(e.target.checked)
                         }}
                       />
                     </div>

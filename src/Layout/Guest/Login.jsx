@@ -1,12 +1,13 @@
-import { useState } from "React";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { setSession } from "../../helpers/Auth";
 import { apiRequest, errorMsg, successMsg } from "../../helpers/General";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [rememberMe, setRememberMe] = useState(null);
-  const [rememberVal, setRememberVal] = useState(null);
+  const [rememberVal, setRememberVal] = useState(false);
 
   async function onSubmit(data) {
     let params = {
@@ -17,6 +18,10 @@ const Login = () => {
     }
     let response = await apiRequest(params);
     if (response.data.success) {
+      let user_data = {
+        token: response.data.data.token
+      }
+      setSession(user_data);
       successMsg(response.data.message);
     } else {
       errorMsg(response.data.message);

@@ -4,12 +4,11 @@ import { useForm } from "react-hook-form";
 import { setSession } from "../../helpers/Auth";
 import { apiRequest, errorMsg, successMsg } from "../../helpers/General";
 
-const Login = () => {
+const Login = (props) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [rememberMe, setRememberMe] = useState(null);
   const [rememberVal, setRememberVal] = useState(false);
 
-  async function onSubmit(data) {
+  const onSubmit = async (data) => {
     let params = {
       method: 'POST',
       api: '/login',
@@ -19,10 +18,12 @@ const Login = () => {
     let response = await apiRequest(params);
     if (response.data.success) {
       let user_data = {
-        token: response.data.data.token
+        token: response.data.data.token,
+        user: response.data.data.user
       }
       setSession(user_data);
       successMsg(response.data.message);
+      props.setSessionData(user_data);  /// exporting to app.js via props drilling
     } else {
       errorMsg(response.data.message);
     }
@@ -80,7 +81,7 @@ const Login = () => {
                         className="form-check-input pointer"
                         type="checkbox"
                         id="rememberMe"
-                        checked={rememberMe}
+                        // checked={rememberMe}
                         value={rememberVal}
                         onChange={(e) => {
                           setRememberVal(e.target.checked)

@@ -7,6 +7,11 @@ export const setSession = (data) => {
 }
 
 export const getSession = () => {
-    let ciphertext = CryptoJS.AES.decrypt(localStorage.getItem('user'), encKey);
-    return JSON.parse(ciphertext.toString(CryptoJS.enc.Utf8));
+    let userData = localStorage.getItem('user');
+    if(userData) {
+        let ciphertext = CryptoJS.AES.decrypt(userData, encKey);
+        return JSON.parse(ciphertext.toString(CryptoJS.enc.Utf8));
+    } else {
+        return '';
+    }
 }

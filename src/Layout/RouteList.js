@@ -1,6 +1,7 @@
 import { lazy } from "react";
 const Dashboard = lazy(() => import("./modules/Dashboard"));
 const Login = lazy(() => import("./guest/Login"));
+const Logout = lazy(() => import("./modules/Logout"));
 const Signup = lazy(() => import("./guest/Signup"));
 const ForgotPassword = lazy(() => import("./guest/ForgotPassword"));
 const ThankYou = lazy(() => import("./guest/ThankYou"));
@@ -11,6 +12,11 @@ const RouteList = [
     path: "/",
     component: Login,
     allowWithoutLogin: true,
+  },
+  {
+    path: "/logout",
+    component: Logout,
+    allowWithoutLogin: false,
   },
   {
     path: "/signup",

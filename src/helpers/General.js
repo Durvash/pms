@@ -39,13 +39,16 @@ export const apiRequest = (data) => {
     try {
         let api_name = data?.api;
         let method = data?.method;
+        let token = data?.token;
         delete data.method;
         delete data.api;
+        delete data.token;
 
         axios.defaults.baseURL = apiUrl;
         axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;multipart/form-data';
         axios.defaults.headers.get['Content-Type'] = 'application/json;charset=UTF-8';
         axios.defaults.headers.post['device'] = appDevice;
+        axios.defaults.headers.post['authtoken'] = token;
         axios.defaults.timeout = 1000 * 60; // Wait for 60 seconds
 
         if (method == 'POST') {

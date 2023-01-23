@@ -15,3 +15,7 @@ export const getSession = () => {
         return '';
     }
 }
+
+export const deleteSession = () => {
+    localStorage.removeItem('user');
+}

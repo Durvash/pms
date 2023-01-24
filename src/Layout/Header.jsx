@@ -5,8 +5,29 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
+import { deleteSession, getSession } from '../helpers/Auth';
+import { apiRequest, errorMsg, successMsg } from '../helpers/General';
 
 const Header = () => {
+  const handleLogout  = async () => {
+    let data = getSession();
+    let params = {
+      method: 'POST',
+      api: '/logout',
+      user_id: data.user.user_id,
+      token: data.token,
+      from_all_device: 'no'
+    }
+    let response = await apiRequest(params);
+    if (response.data.success) {
+      successMsg(response.data.message);
+      deleteSession();  /// exporting to app.js via props drilling
+      window.location.replace("/");
+    } else {
+      errorMsg(response.data.message);
+    }
+  }
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -28,7 +49,7 @@ const Header = () => {
                 Another action
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <Link to="/logout" className="dropdown-item">
+              <Link to="#" className="dropdown-item" onClick={() => handleLogout()}>
                 Logout
               </Link>
             </NavDropdown>

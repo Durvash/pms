@@ -1,22 +1,17 @@
 import { lazy } from "react";
 const Dashboard = lazy(() => import("./modules/Dashboard"));
 const Login = lazy(() => import("./guest/Login"));
-const Logout = lazy(() => import("./modules/Logout"));
 const Signup = lazy(() => import("./guest/Signup"));
 const ForgotPassword = lazy(() => import("./guest/ForgotPassword"));
 const ThankYou = lazy(() => import("./guest/ThankYou"));
 const VerifyEmail = lazy(() => import("./guest/VerifyEmail"));
+const accountSetup = lazy(() => import("./guest/accountSetup"));
 
 const RouteList = [
   {
     path: "/",
     component: Login,
     allowWithoutLogin: true,
-  },
-  {
-    path: "/logout",
-    component: Logout,
-    allowWithoutLogin: false,
   },
   {
     path: "/signup",
@@ -36,6 +31,11 @@ const RouteList = [
   {
     path: "/forgot-password",
     component: ForgotPassword,
+    allowWithoutLogin: true,
+  },
+  {
+    path: "/account-setup",
+    component: accountSetup,
     allowWithoutLogin: true,
   },
   {

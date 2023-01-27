@@ -9,7 +9,9 @@ const VerifyEmail = () => {
   const emailData = searchParams.get('data');
 
   useEffect(() => {
-    postData(emailData);
+    return(() => {
+      postData(emailData);
+    })
   }, []);
 
   const postData = async (data) => {
@@ -23,8 +25,8 @@ const VerifyEmail = () => {
         user: response.data.data
       }
       setSession(user_data);
-      // successMsg(response.data.message);
-      navigate('/account-setup');
+      successMsg(response.data.message);
+      navigate('/account-setup/personal-detail');
     } else {
       errorMsg(response.data.message);
     }

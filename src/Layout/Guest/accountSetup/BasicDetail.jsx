@@ -1,27 +1,33 @@
 import { useForm } from "react-hook-form"
-import { Link } from "react-router-dom";
-import { getSession } from "../../helpers/Auth";
-import { apiRequest, errorMsg, successMsg } from "../../helpers/General";
-import Header from "../Header"
+import { Link, useNavigate } from "react-router-dom";
+import { setSession } from "../../../helpers/Auth";
+import { apiRequest, errorMsg, successMsg } from "../../../helpers/General";
 
-const accountSetup = () => {
-  const { user } = getSession();
+const BasicDetail = (props) => {
+  const { userData } = props;
+  console.log(userData);
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     let params = {
       method: 'POST',
       api: '/update_account',
       user_id: data.user_id,
+      email: data.email,
       first_name: data.first_name,
       last_name: data.last_name,
-      password: data.password
+      password: data.new_password
     }
     let response = await apiRequest(params);
     if (response.data.success) {
+      let user_data = {
+        user: { ...response.data.data.user, token: response.data.data.token }
+      }
+      setSession(user_data);
+      props.setUserData(user_data);  /// exporting to accountSetup via props
       successMsg(response.data.message);
-      // navigate('/thank-you');
+      navigate('/account-setup/company-detail');
     } else {
       errorMsg(response.data.message);
     }
@@ -29,34 +35,34 @@ const accountSetup = () => {
 
   return (
     <>
-      <Header />
       <div className="container">
         <div className="row mt-5">
           <div className="col-12">
             <h1 className="display-6">Welcome to PMS</h1>
           </div>
           <div className="col-12 mt-3">
-            <p className="fw-light fs-5">You're signing up as {user?.email}.</p>
+            <p className="fw-light fs-5">You're signing up as {userData?.user?.email}.</p>
           </div>
         </div>
         <form className="mt-2" onSubmit={handleSubmit(onSubmit)}>
-          <input type="hidden" {...register('user_id', { required: true })} value={user?.user_id} />
+          <input type="hidden" {...register('user_id', { required: true })} value={userData?.user?.user_id} />
+          <input type="hidden" {...register('email', { required: true })} value={userData?.user?.email} />
           <div className="row">
             <div className="col-md-4 mb-3">
               <label htmlFor="first_name" className="form-label">First Name</label>
-              <input type="textbox" {...register('first_name', { required: true })} className="form-control" placeholder="Durvash" />
+              <input type="textbox" {...register('first_name', { required: true })} value={userData?.user?.first_name} className="form-control" placeholder="Durvash" />
             </div>
           </div>
           <div className="row">
             <div className="col-md-4 mb-3">
               <label htmlFor="last_name" className="form-label">Last Name</label>
-              <input type="textbox" {...register('last_name', { required: true })} className="form-control" placeholder="Nimje" />
+              <input type="textbox" {...register('last_name', { required: true })} value={userData?.user?.last_name} className="form-control" placeholder="Nimje" />
             </div>
           </div>
           <div className="row">
             <div className="col-md-4 mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input type="password" {...register('password', { required: true })} className="form-control" placeholder="******" />
+              <label htmlFor="new_password" className="form-label">Password</label>
+              <input type="password" {...register('new_password', { required: true })} className="form-control" placeholder="******" />
             </div>
           </div>
           <div className="row">
@@ -75,4 +81,4 @@ const accountSetup = () => {
   )
 }
 
-export default accountSetup
+export default BasicDetail

@@ -19,7 +19,7 @@ const RouteList = [
     allowWithoutLogin: true,
   },
   {
-    path: "/thank-you",
+    path: "/thank-you",   /// after signup, will redirect to thank you page
     component: ThankYou,
     allowWithoutLogin: true,
   },
@@ -34,7 +34,7 @@ const RouteList = [
     allowWithoutLogin: true,
   },
   {
-    path: "/account-setup",
+    path: "/account-setup/:page",
     component: accountSetup,
     allowWithoutLogin: true,
   },

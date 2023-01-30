@@ -4,6 +4,7 @@ import { apiRequest, errorMsg, successMsg } from "../../../helpers/General";
 
 const ProjectDetail = (props) => {
   const { userData } = props;
+  console.log('project-detail',userData);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -34,7 +35,7 @@ const ProjectDetail = (props) => {
             </div>
           </div>
           <div className="col-12 mt-3">
-            <h4 className="display-6">Let's set up your first project</h4>
+            <h4 className="">Let's set up your first project</h4>
           </div>
         </div>
         <form className="mt-2" onSubmit={handleSubmit(onSubmit)}>

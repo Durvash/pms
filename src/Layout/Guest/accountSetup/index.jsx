@@ -4,6 +4,7 @@ import { getSession } from "../../../helpers/Auth";
 import Header from "../../Header"
 const BasicDetail = lazy(() => import("./BasicDetail"));
 const CompanyDetail = lazy(() => import("./CompanyDetail"));
+const ProjectDetail = lazy(() => import("./ProjectDetail"));
 
 const accountSetup = () => {
   const [userData, setUserData] = useState(getSession());
@@ -15,7 +16,8 @@ const accountSetup = () => {
         userData && userData?.user?.user_id && page
           ? {
             'personal-detail': <BasicDetail userData={userData} setUserData={setUserData} />,
-            'company-detail': <CompanyDetail userData={userData} setUserData={setUserData} />
+            'company-detail': <CompanyDetail userData={userData} setUserData={setUserData} />,
+            'project-detail': <ProjectDetail userData={userData} setUserData={setUserData} />
           }[page]
           : <></>
       }

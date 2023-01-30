@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom";
+import { setSession } from "../../../helpers/Auth";
 import { apiRequest, errorMsg, successMsg } from "../../../helpers/General";
 
 const CompanyDetail = (props) => {
@@ -10,16 +11,21 @@ const CompanyDetail = (props) => {
   const onSubmit = async (data) => {
     let params = {
       method: 'POST',
-      api: '/add_company',
+      api: data.company_id ? '/update_company' : '/add_company',
       user_id: userData?.user?.user_id,
       token: userData?.user?.token,
+      company_id: data.company_id,
       company_name: data.company_name,
       company_info: data.company_info
     }
     let response = await apiRequest(params);
     if (response.data.success) {
       successMsg(response.data.message);
-      navigate('/project-detail');
+      props.setUserData(prevState => {
+        return { ...prevState, company: response.data.data }
+      });
+      setSession({ ...userData, company: response.data.data });
+      navigate('/account-setup/project-detail');
     } else {
       errorMsg(response.data.message);
     }
@@ -39,26 +45,22 @@ const CompanyDetail = (props) => {
           </div>
         </div>
         <form className="mt-2" onSubmit={handleSubmit(onSubmit)}>
+          <input type="hidden" {...register('company_id', { required: false })} value={userData?.company?.company_id} />
           <div className="row">
             <div className="col-md-4 mb-3">
               <label htmlFor="company_name" className="form-label">Company Name</label>
-              <input type="textbox" {...register('company_name', { required: true })} className="form-control" placeholder="Company Pvt Ltd" />
+              <input type="textbox" {...register('company_name', { required: true })} value={userData?.company?.company_name} className="form-control" placeholder="Company Pvt Ltd" />
             </div>
           </div>
           <div className="row">
             <div className="col-md-4 mb-3">
               <label htmlFor="company_info" className="form-label">Summary</label>
-              <textarea {...register('company_info', { required: true })} className="form-control" placeholder="Project Name" ></textarea>
+              <textarea {...register('company_info', { required: true })} value={userData?.company?.company_info} className="form-control" placeholder="Summary about your company..." ></textarea>
             </div>
           </div>
           <div className="row">
             <div className="col-md-4 mb-3">
               <button type="submit" className="btn btn-primary btn-block">Continue</button>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-4">
-              Wrong account? <Link to="/">Log in</Link> instead.
             </div>
           </div>
         </form>

@@ -37,7 +37,7 @@ const CompanyDetail = (props) => {
         <div className="row mt-5">
           <div className="col-12">
             <div className="progress">
-              <div className="progress-bar" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+              <div className="progress-bar" role="progressbar" style={{ width: "20%" }} aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
           <div className="col-12 mt-3">

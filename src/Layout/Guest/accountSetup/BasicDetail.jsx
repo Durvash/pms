@@ -5,7 +5,7 @@ import { apiRequest, errorMsg, successMsg } from "../../../helpers/General";
 
 const BasicDetail = (props) => {
   const { userData } = props;
-  console.log(userData);
+  // console.log(userData);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
 

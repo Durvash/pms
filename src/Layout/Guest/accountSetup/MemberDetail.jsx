@@ -1,39 +1,42 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom";
 import { setSession } from "../../../helpers/Auth";
 import { apiRequest, errorMsg, successMsg } from "../../../helpers/General";
 
-const initialTabList = [
-  { id: 0, name: 'To do' },
-  { id: 1, name: 'Doing' },
-  { id: 2, name: 'Done' }
+const initialEmailList = [
+  { id: 0, email: '' },
+  { id: 1, email: '' },
+  { id: 2, email: '' }
 ];
 
-const TaskSection = (props) => {
+const MemberDetail = (props) => {
   const { userData } = props;
   // console.log(userData);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [tabList, setTabList] = useState(initialTabList);
+  const [emailList, setEmailList] = useState(initialEmailList);
+  const firstTaskSectionId = (userData?.task_section) ? userData.task_section[0].tab_list_id : 0;
 
   const onSubmit = async (data) => {
     let params = {
       method: 'POST',
-      api: '/add_multi_task_section',
+      api: '/add_multi_project_members',
       user_id: userData?.user?.user_id,
       token: userData?.user?.token,
+      company_id: data.company_id,
       project_id: data.project_id,
-      tab_list_name: data.tab_list_name
+      email: data.email
     }
+    console.log(params);
     let response = await apiRequest(params);
     if (response.data.success) {
       successMsg(response.data.message);
       props.setUserData(prevState => {
-        return { ...prevState, task_section: response.data.data }
+        return { ...prevState, project_members: response.data.data }
       });
-      setSession({ ...userData, task_section: response.data.data });
-      navigate('/account-setup/task-detail');
+      setSession({ ...userData, project_members: response.data.data });
+      // navigate('/account-setup/task-detail');
     } else {
       errorMsg(response.data.message);
     }
@@ -45,26 +48,26 @@ const TaskSection = (props) => {
         <div className="row mt-5">
           <div className="col-12">
             <div className="progress">
-              <div className="progress-bar" role="progressbar" style={{ width: "60%" }} aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+              <div className="progress-bar" role="progressbar" style={{ width: "100%" }} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
           </div>
           <div className="col-12 mt-3">
-            {/* <h4 className="">How would you group tasks into sections or stages?</h4> */}
+            <h4 className="">Congratulations, you've created your first project in PMS!</h4>
           </div>
         </div>
         <form className="mt-2" onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" {...register('project_id', { required: false })} value={userData?.project?.project_id} />
-          <input type="hidden" {...register('tab_list_id', { required: false })} value={userData?.task_tab?.tab_list_id} />
+          <input type="hidden" {...register('company_id', { required: false })} value={userData?.company?.company_id} />
           <div className="row">
             <div className="col-md-4 mb-3">
-              <label htmlFor="tab_list_name" className="form-label">How would you group tasks into sections or stages?</label>
+              <label htmlFor="task_title" className="form-label">Who's working on this project with you?</label>
             </div>
           </div>
           {
-            tabList && tabList.map((tab, index) => {
+            emailList && emailList.map((obj, index) => {
               return <div className="row" key={index}>
                 <div className="col-md-4 mb-3">
-                  <input type="textbox" {...register(`tab_list_name[${index}]`, { required: true, minLength:2, })} id={`tab_list_${index}`} defaultValue={tab.name} onChange={(e) => { return e.target.value }} className="form-control" placeholder="Task Section Name" />
+                  <input type="textbox" {...register(`email[${obj.id}]`, { required: true, minLength:2, })} id={`email_${index}`} defaultValue={obj.email} onChange={(e) => { return e.target.value }} className="form-control" placeholder="Teammate's email" />
                 </div>
               </div>
             })
@@ -80,4 +83,4 @@ const TaskSection = (props) => {
   )
 }
 
-export default TaskSection
+export default MemberDetail

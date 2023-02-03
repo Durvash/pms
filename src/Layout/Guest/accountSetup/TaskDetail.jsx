@@ -12,11 +12,11 @@ const initialTabList = [
 
 const TaskDetail = (props) => {
   const { userData } = props;
-  console.log(userData);
+  // console.log(userData);
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [taskList, setTaskList] = useState(initialTabList);
-  const firstTaskSectionId = (userData?.task_tab) ? userData.task_tab[0].tab_list_id : 0;
+  const firstTaskSectionId = (userData?.task_section) ? userData.task_section[0].tab_list_id : 0;
 
   const onSubmit = async (data) => {
     let params = {
@@ -27,18 +27,18 @@ const TaskDetail = (props) => {
       assign_to: userData?.user?.user_id,
       report_to: userData?.user?.user_id,
       priority: 'Low',
+      tab_list_id: data.tab_list_id,
       task_title: data.task_title,
-      task_desc: data.task_desc
+      // task_desc: data.task_desc
     }
-    console.log(params);
     let response = await apiRequest(params);
     if (response.data.success) {
       successMsg(response.data.message);
       props.setUserData(prevState => {
-        return { ...prevState, task_section: response.data.data }
+        return { ...prevState, task_list: response.data.data }
       });
-      setSession({ ...userData, task_section: response.data.data });
-      navigate('/account-setup/task-detail');
+      setSession({ ...userData, task_list: response.data.data });
+      navigate('/account-setup/member-detail');
     } else {
       errorMsg(response.data.message);
     }

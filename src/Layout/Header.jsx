@@ -1,15 +1,10 @@
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Container, Button, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { deleteSession, getSession } from '../helpers/Auth';
 import { apiRequest, errorMsg, successMsg } from '../helpers/General';
 
 const Header = () => {
-  const handleLogout  = async () => {
+  const handleLogout = async () => {
     let data = getSession();
     let params = {
       method: 'POST',
@@ -31,9 +26,7 @@ const Header = () => {
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand>
-          <Link to="/">PMS</Link>
-        </Navbar.Brand>
+        <Navbar.Brand as={Link} to="/dashboard">PMS</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -41,31 +34,28 @@ const Header = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Link</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <Link to="#" className="dropdown-item" onClick={() => handleLogout()}>
-                Logout
-              </Link>
-            </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
+            <Nav.Link as={Link} to="/dashboard">Home</Nav.Link>
+            <Nav.Link as={Link} to="/tasks">My Tasks</Nav.Link>
+            <Nav.Link as={Link} to="/projects">My Projects</Nav.Link>
+            
+            <Form className="d-flex">
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+              />
+              <Button variant="outline-success">Search</Button>
+            </Form>
           </Nav>
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-success">Search</Button>
-          </Form>
+
+            <NavDropdown title={<img src='https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp' className='rounded-circle navbar-profile-pic' />} id="navbarScrollingDropdown">
+              <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/change-password">Change Password</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item as={Link} to="#" className="dropdown-item" onClick={() => handleLogout()}>Logout</NavDropdown.Item>
+            </NavDropdown>
+
         </Navbar.Collapse>
       </Container>
     </Navbar>

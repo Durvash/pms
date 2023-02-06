@@ -9,7 +9,7 @@ const TaskSection = lazy(() => import("./TaskSection"));
 const TaskDetail = lazy(() => import("./TaskDetail"));
 const MemberDetail = lazy(() => import("./MemberDetail"));
 
-const accountSetup = () => {
+const accountSetup = (props) => {
   const [userData, setUserData] = useState(getSession());
   const { page } = useParams();
   return (
@@ -23,7 +23,7 @@ const accountSetup = () => {
             'project-detail': <ProjectDetail userData={userData} setUserData={setUserData} />,
             'task-section': <TaskSection userData={userData} setUserData={setUserData} />,
             'task-detail': <TaskDetail userData={userData} setUserData={setUserData} />,
-            'member-detail': <MemberDetail userData={userData} setUserData={setUserData} />
+            'member-detail': <MemberDetail userData={userData} setUserData={setUserData} setSessionData={props.setSessionData} />
           }[page]
           : <></>
       }

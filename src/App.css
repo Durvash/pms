@@ -14,3 +14,13 @@
   text-decoration: none;
   color: var(--bs-nav-link-color);
 }
+.navbar-profile-pic {
+  height: 20px;
+  width: 20px;
+}
+.dropdown-menu[data-bs-popper] {
+  top: 100%;
+  left: auto;
+  right: 0;
+  margin-top: var(--bs-dropdown-spacer);
+}

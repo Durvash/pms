@@ -16,7 +16,6 @@ const MemberDetail = (props) => {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [emailList, setEmailList] = useState(initialEmailList);
-  const firstTaskSectionId = (userData?.task_section) ? userData.task_section[0].tab_list_id : 0;
 
   const onSubmit = async (data) => {
     let params = {
@@ -28,15 +27,16 @@ const MemberDetail = (props) => {
       project_id: data.project_id,
       email: data.email
     }
-    console.log(params);
+    // console.log(params);
     let response = await apiRequest(params);
     if (response.data.success) {
       successMsg(response.data.message);
       props.setUserData(prevState => {
         return { ...prevState, project_members: response.data.data }
       });
-      setSession({ ...userData, project_members: response.data.data });
-      // navigate('/account-setup/task-detail');
+      setSession({ ...userData, token: userData?.user?.token, project_members: response.data.data });  //// set user token to allow dashboard
+      props.setSessionData({ ...userData, token: userData?.user?.token, project_members: response.data.data });  //// set user token to allow dashboard
+      navigate('/dashboard');
     } else {
       errorMsg(response.data.message);
     }

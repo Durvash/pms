@@ -10,6 +10,7 @@ import Guest from "./layout/guest";
 
 function App() {
   const [sessionData, setSessionData] = useState(getSession());
+  console.log(sessionData);
   return (
     <div className="App">
       <BrowserRouter>

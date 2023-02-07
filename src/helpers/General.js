@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { apiUrl, appDevice } from "../config";
@@ -68,5 +66,24 @@ export const apiRequest = (data) => {
             success: 0,
             message: error
         }
+    }
+}
+
+export const getDayWish = (hour) => {
+    if(!hour) {
+        let date = new Date();
+        hour = date.getHours();
+    }
+    if(hour >= 0 && hour < 12) {
+        return 'Good Morning';
+    }
+    if(hour >= 12 && hour < 17) {
+        return 'Good Afternoon';
+    }
+    if(hour >= 17 && hour < 20) {
+        return 'Good Evening';
+    }
+    if(hour >= 20) {
+        return 'Good Night';
     }
 }

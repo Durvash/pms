@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { setSession } from "../../helpers/Auth";
 import { apiRequest, errorMsg, successMsg } from "../../helpers/General";
@@ -7,6 +7,7 @@ import { apiRequest, errorMsg, successMsg } from "../../helpers/General";
 const Login = (props) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [rememberVal, setRememberVal] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     let params = {
@@ -24,6 +25,7 @@ const Login = (props) => {
       setSession(user_data);
       successMsg(response.data.message);
       props.setSessionData(user_data);  /// exporting to app.js via props drilling
+      navigate('/dashboard');
     } else {
       errorMsg(response.data.message);
     }

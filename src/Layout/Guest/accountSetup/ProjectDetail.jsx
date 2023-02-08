@@ -10,17 +10,20 @@ const ProjectDetail = (props) => {
 
   const onSubmit = async (data) => {
     let params = {
-      method: 'POST',
       api: data.project_id ? '/update_project' : '/add_project',
       user_id: userData?.user?.user_id,
-      token: userData?.user?.token,
       lead_by: userData?.user?.user_id,
       company_id: data.company_id,
       project_id: data.project_id,
       project_name: data.project_name,
       project_desc: data.project_desc
     }
-    let response = await apiRequest(params);
+    let headers = {
+      'Content-Type': 'application/x-www-form-urlencoded;multipart/form-data',
+      'Access-Control-Allow-Origin': '*',
+      'authtoken': userData?.user?.token
+    }
+    let response = await apiRequest('POST', params, headers);
     if (response.data.success) {
       successMsg(response.data.message);
       props.setUserData(prevState => {

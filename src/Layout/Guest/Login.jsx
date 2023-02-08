@@ -11,12 +11,15 @@ const Login = (props) => {
 
   const onSubmit = async (data) => {
     let params = {
-      method: 'POST',
       api: '/login',
       email: data.email,
       password: data.password
     }
-    let response = await apiRequest(params);
+    let headers = {
+      'Content-Type': 'application/x-www-form-urlencoded;multipart/form-data',
+      'Access-Control-Allow-Origin': '*'
+    }
+    let response = await apiRequest('POST', params, headers);
     if (response.data.success) {
       let user_data = {
         token: response.data.data.token,

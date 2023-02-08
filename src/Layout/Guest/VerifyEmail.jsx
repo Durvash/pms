@@ -16,10 +16,13 @@ const VerifyEmail = () => {
 
   const postData = async (data) => {
     let params = {
-      method: 'GET',
       api: '/confirm_account/' + data
     }
-    let response = await apiRequest(params);
+    let headers = {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Access-Control-Allow-Origin': '*'
+    }
+    let response = await apiRequest('GET', params, headers);
     if (response.data.success) {
       let user_data = {
         user: response.data.data

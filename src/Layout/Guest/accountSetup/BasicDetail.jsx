@@ -11,7 +11,6 @@ const BasicDetail = (props) => {
 
   const onSubmit = async (data) => {
     let params = {
-      method: 'POST',
       api: '/update_account',
       user_id: data.user_id,
       email: data.email,
@@ -19,7 +18,11 @@ const BasicDetail = (props) => {
       last_name: data.last_name,
       password: data.new_password
     }
-    let response = await apiRequest(params);
+    let headers = {
+      'Content-Type': 'application/x-www-form-urlencoded;multipart/form-data',
+      'Access-Control-Allow-Origin': '*'
+    }
+    let response = await apiRequest('POST', params, headers);
     if (response.data.success) {
       let user_data = {
         user: { ...response.data.data.user, token: response.data.data.token }

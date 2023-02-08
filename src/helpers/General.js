@@ -35,55 +35,49 @@ export const infoMsg = (message) => toast.info(message, {
     draggable: false
 })
 
-export const apiRequest = (data) => {
+export const apiRequest = (method, data = {}, headers = {}) => {
     try {
         let api_name = data?.api;
-        let method = data?.method;
-        let token = data?.token;
-        delete data.method;
-        delete data.api;
-        delete data.token;
+        if (api_name) delete data.api;
 
         axios.defaults.baseURL = apiUrl;
-        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;multipart/form-data';
-        axios.defaults.headers.post['device'] = appDevice;
-        axios.defaults.headers.post['authtoken'] = token;
-        axios.defaults.headers.get['Content-Type'] = 'application/json;charset=UTF-8';
-        axios.defaults.headers.get['device'] = appDevice;
-        axios.defaults.headers.get['authtoken'] = token;
         axios.defaults.timeout = 1000 * 60; // Wait for 60 seconds
-
-        if (method == 'POST') {
-            let response = axios.post(api_name, data)
+        // debugger
+        if (method.toLowerCase() == 'post') {
+            axios.defaults.headers.post['device'] = appDevice;
+            let response = axios.post(api_name, data, { headers: headers })
             return response;
         } else {
-            let response = axios.get(api_name, data)
+            axios.defaults.headers.get['device'] = appDevice;
+            let response = axios.get(api_name, data, { headers: headers })
             return response;
         }
 
     } catch (error) {
         return {
-            success: 0,
-            message: error
+            data: {
+                success: 0,
+                message: error
+            }
         }
     }
 }
 
 export const getDayWish = (hour) => {
-    if(!hour) {
+    if (!hour) {
         let date = new Date();
         hour = date.getHours();
     }
-    if(hour >= 0 && hour < 12) {
+    if (hour >= 0 && hour < 12) {
         return 'Good Morning';
     }
-    if(hour >= 12 && hour < 17) {
+    if (hour >= 12 && hour < 17) {
         return 'Good Afternoon';
     }
-    if(hour >= 17 && hour < 20) {
+    if (hour >= 17 && hour < 20) {
         return 'Good Evening';
     }
-    if(hour >= 20) {
+    if (hour >= 20) {
         return 'Good Night';
     }
 }

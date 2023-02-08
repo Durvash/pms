@@ -20,10 +20,8 @@ const TaskDetail = (props) => {
 
   const onSubmit = async (data) => {
     let params = {
-      method: 'POST',
       api: '/add_multi_task',
       user_id: userData?.user?.user_id,
-      token: userData?.user?.token,
       assign_to: userData?.user?.user_id,
       report_to: userData?.user?.user_id,
       priority: 'Low',
@@ -31,7 +29,12 @@ const TaskDetail = (props) => {
       task_title: data.task_title,
       // task_desc: data.task_desc
     }
-    let response = await apiRequest(params);
+    let headers = {
+      'Content-Type': 'application/x-www-form-urlencoded;multipart/form-data',
+      'Access-Control-Allow-Origin': '*',
+      'authtoken': userData?.user?.token
+    }
+    let response = await apiRequest('POST', params, headers);
     if (response.data.success) {
       successMsg(response.data.message);
       props.setUserData(prevState => {

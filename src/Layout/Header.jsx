@@ -7,13 +7,16 @@ const Header = () => {
   const handleLogout = async () => {
     let data = getSession();
     let params = {
-      method: 'POST',
       api: '/logout',
       user_id: data.user.user_id,
       token: data.token,
       from_all_device: 'no'
     }
-    let response = await apiRequest(params);
+    let headers = {
+      'Content-Type': 'application/x-www-form-urlencoded;multipart/form-data',
+      'Access-Control-Allow-Origin': '*'
+    }
+    let response = await apiRequest('POST', params, headers);
     if (response.data.success) {
       successMsg(response.data.message);
       deleteSession();  /// exporting to app.js via props drilling

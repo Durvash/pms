@@ -6,6 +6,7 @@ const ForgotPassword = lazy(() => import("./guest/ForgotPassword"));
 const ThankYou = lazy(() => import("./guest/ThankYou"));
 const VerifyEmail = lazy(() => import("./guest/VerifyEmail"));
 const accountSetup = lazy(() => import("./guest/accountSetup"));
+const TaskList = lazy(() => import("./modules/TaskList"));
 
 const RouteList = [
   {
@@ -41,6 +42,11 @@ const RouteList = [
   {
     path: "/dashboard",
     component: Dashboard,
+    allowWithoutLogin: false,
+  },
+  {
+    path: "/tasks",
+    component: TaskList,
     allowWithoutLogin: false,
   },
 ];

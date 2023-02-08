@@ -10,15 +10,18 @@ const CompanyDetail = (props) => {
 
   const onSubmit = async (data) => {
     let params = {
-      method: 'POST',
       api: data.company_id ? '/update_company' : '/add_company',
       user_id: userData?.user?.user_id,
-      token: userData?.user?.token,
       company_id: data.company_id,
       company_name: data.company_name,
       company_info: data.company_info
     }
-    let response = await apiRequest(params);
+    let headers = {
+      'Content-Type': 'application/x-www-form-urlencoded;multipart/form-data',
+      'Access-Control-Allow-Origin': '*',
+      'authtoken': userData?.user?.token
+    }
+    let response = await apiRequest('POST', params, headers);
     if (response.data.success) {
       successMsg(response.data.message);
       props.setUserData(prevState => {

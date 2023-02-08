@@ -8,11 +8,14 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     let params = {
-      method: 'POST',
       api: '/signup',
       email: data.email
     }
-    let response = await apiRequest(params);
+    let headers = {
+      'Content-Type': 'application/x-www-form-urlencoded;multipart/form-data',
+      'Access-Control-Allow-Origin': '*'
+    }
+    let response = await apiRequest('POST', params, headers);
     if(response.data.success) {
       successMsg(response.data.message);
       navigate('/thank-you');

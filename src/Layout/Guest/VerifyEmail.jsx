@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { setSession } from "../../helpers/Auth";
 import { apiRequest, errorMsg, successMsg } from "../../helpers/General";
@@ -6,12 +6,14 @@ import { apiRequest, errorMsg, successMsg } from "../../helpers/General";
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const isLoading = useRef(true);
   const emailData = searchParams.get('data');
 
   useEffect(() => {
-    return(() => {
+    if(isLoading.current) {
+      isLoading.current = false;
       postData(emailData);
-    })
+    }
   }, []);
 
   const postData = async (data) => {

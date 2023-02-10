@@ -44,12 +44,14 @@ export const apiRequest = (method, data = {}, headers = {}) => {
         axios.defaults.timeout = 1000 * 60; // Wait for 60 seconds
         // debugger
         if (method.toLowerCase() == 'post') {
+            axios.defaults.headers.post = headers;
             axios.defaults.headers.post['device'] = appDevice;
-            let response = axios.post(api_name, data, { headers: headers })
+            let response = axios.post(api_name, data)
             return response;
         } else {
+            axios.defaults.headers.get = headers;
             axios.defaults.headers.get['device'] = appDevice;
-            let response = axios.get(api_name, data, { headers: headers })
+            let response = axios.get(api_name, data)
             return response;
         }
 
